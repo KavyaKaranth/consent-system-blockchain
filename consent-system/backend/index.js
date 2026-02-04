@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-require("dotenv").config();
 
 const consentRoutes = require("./routes/consentRoutes");
 
@@ -14,6 +13,6 @@ app.get("/health", (req, res) => {
   res.json({ status: "Backend running" });
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`Server running on port ${process.env.PORT}`);
+app.listen(5000, () => {
+  console.log("Backend running on port 5000");
 });

@@ -1,46 +1,42 @@
-const pool = require("../db");
+let consents = [];
+let idCounter = 1;
 
 // CREATE CONSENT
-exports.createConsent = async (req, res) => {
-  try {
-    const { user_id, purpose, data_category, retention } = req.body;
+exports.createConsent = (req, res) => {
+  const consent = {
+    id: idCounter++,
+    user_id: req.body.user_id,
+    purpose: req.body.purpose,
+    data_category: req.body.data_category,
+    retention: req.body.retention,
+    status: "ACTIVE",
+    created_at: new Date()
+  };
 
-    const result = await pool.query(
-      `INSERT INTO consents (user_id, purpose, data_category, retention, status)
-       VALUES ($1,$2,$3,$4,'ACTIVE') RETURNING *`,
-      [user_id, purpose, data_category, retention]
-    );
-
-    res.status(201).json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
+  consents.push(consent);
+  res.status(201).json(consent);
 };
 
-// READ CONSENT
-exports.getConsent = async (req, res) => {
-  try {
-    const result = await pool.query(
-      "SELECT * FROM consents WHERE id=$1",
-      [req.params.id]
-    );
-
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+// GET CONSENT BY ID
+exports.getConsent = (req, res) => {
+  const consent = consents.find(c => c.id == req.params.id);
+  if (!consent) {
+    return res.status(404).json({ message: "Consent not found" });
   }
+  res.json(consent);
 };
 
 // REVOKE CONSENT
-exports.revokeConsent = async (req, res) => {
-  try {
-    const result = await pool.query(
-      "UPDATE consents SET status='REVOKED' WHERE id=$1 RETURNING *",
-      [req.params.id]
-    );
-
-    res.json(result.rows[0]);
-  } catch (err) {
-    res.status(500).json({ error: err.message });
+exports.revokeConsent = (req, res) => {
+  const consent = consents.find(c => c.id == req.params.id);
+  if (!consent) {
+    return res.status(404).json({ message: "Consent not found" });
   }
+  consent.status = "REVOKED";
+  res.json(consent);
+};
+
+// LIST ALL CONSENTS (for demo)
+exports.getAllConsents = (req, res) => {
+  res.json(consents);
 };

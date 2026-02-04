@@ -3,9 +3,10 @@ import ViewConsent from "./pages/ViewConsent";
 
 function App() {
   return (
-    <div>
+    <div style={{ padding: "20px" }}>
       <h2>Machine Readable Legal Consent</h2>
       <CreateConsent />
+      <hr />
       <ViewConsent />
     </div>
   );

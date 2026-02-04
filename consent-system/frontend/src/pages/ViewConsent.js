@@ -16,7 +16,9 @@ export default function ViewConsent() {
       <input placeholder="Consent ID" onChange={e => setId(e.target.value)} />
       <button onClick={fetchConsent}>Fetch</button>
 
-      {consent && <pre>{JSON.stringify(consent, null, 2)}</pre>}
+      {consent && (
+        <pre>{JSON.stringify(consent, null, 2)}</pre>
+      )}
     </div>
   );
 }

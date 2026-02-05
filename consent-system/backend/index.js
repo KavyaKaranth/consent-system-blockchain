@@ -4,7 +4,11 @@ const cors = require("cors");
 const consentRoutes = require("./routes/consentRoutes");
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin: "*",
+  methods: ["GET", "POST", "PUT"],
+  allowedHeaders: ["Content-Type"]
+}));
 app.use(express.json());
 
 app.use("/api/consents", consentRoutes);
@@ -18,10 +22,10 @@ app.listen(5000, () => {
 });
 
 //chaincode
-
+/*
 'use strict';
 
-const { Contract } = require('fabric-contract-api');
+//const { Contract } = require('fabric-contract-api');
 
 class ConsentContract extends Contract {
 
@@ -47,3 +51,4 @@ class ConsentContract extends Contract {
 }
 
 module.exports = ConsentContract;
+*/
